@@ -32,7 +32,3 @@ Future<List<Note>> getAllDocuments() async{
 Future<Note> deleteDocument(String id) {
   return ref.doc(id).delete();
 }
-
-Stream<QuerySnapshot> getDocCollection() {
-  return ref.snapshots();
-}
