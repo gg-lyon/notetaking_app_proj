@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_taking_app/controller/FirebaseController.dart';
@@ -49,4 +50,3 @@ class NotesListScreen extends StatelessWidget {
 
   }
 }
-

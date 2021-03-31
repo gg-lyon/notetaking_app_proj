@@ -52,30 +52,35 @@ class _MyHomePageState extends State<MyHomePage> {
       routes: <String, WidgetBuilder>{
         NoteEditScreen.route: (context)=>NoteEditScreen()
       },
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => NoteEditScreen())); //change to noteAdd later
-          },
-        ),
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: FutureBuilder<Object>(
-            future: initDb(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if(snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              }
-              return Center(
-                  child: Column(
-                    children: [
-                      NotesListScreen()
-                    ],
-                  ));
-            }
-        ),
+      home: FutureBuilder<Object>(
+        future: initDb(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => NoteEditScreen())); //change to noteAdd later
+              },
+            ),
+            appBar: AppBar(
+              title: Text(widget.title),
+            ),
+            body: StreamBuilder<Object>(
+                stream: FirebaseFirestore.instance.collection('notes').snapshots(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if(snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  return Center(
+                      child: Column(
+                        children: [
+                          NotesListScreen()
+                        ],
+                      ));
+                }
+            ),
+          );
+        }
       ),
     );
   }
